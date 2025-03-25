@@ -1,0 +1,111 @@
+[package]
+name = "mpu6050-tests"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+mpu6050 = "0.1.6"
+serde = { version = "1.0.*", default-features = false }
+postcard = "1.1.1"
+embassy-embedded-hal = { version = "0.3.0", features = ["defmt"] }
+embassy-sync = { version = "0.6.2", features = ["defmt"] }
+embassy-executor = { version = "0.7.0", features = ["task-arena-size-32768", "arch-cortex-m", "executor-thread", "executor-interrupt", "defmt" ] }
+embassy-time = { version = "0.4.0", features = ["defmt", "defmt-timestamp-uptime"] }
+embassy-rp = { version = "0.4.0", features = ["defmt", "unstable-pac", "time-driver", "critical-section-impl", "rp2040"] }
+# embassy-usb = { version = "0.1.0", features = ["defmt"] }
+# embassy-net = { version = "0.4.0", features = ["defmt", "tcp", "udp", "dhcpv4", "medium-ethernet"] }
+# embassy-net-wiznet = { version = "0.1.0", features = ["defmt"] }
+embassy-futures = { version = "0.1.1"}
+# embassy-usb-logger = { version = "0.1.0"}
+# cyw43 = { version = "0.1.0", features = ["defmt", "firmware-logs"] }
+# cyw43-pio = { version = "0.1.0", features = ["defmt", "overclock"] }
+
+static_cell = "2.1.0"
+portable-atomic = { version = "1.11.0", features = ["critical-section"] }
+defmt = "0.3.10"
+defmt-rtt = "0.4.1"
+fixed = "1.29.0"
+fixed-macro = "1.2.0"
+
+cortex-m = { version = "0.7.7", features = ["inline-asm"] }
+cortex-m-rt = "0.7.5"
+panic-probe = { version = "0.3.2", features = ["print-defmt"] }
+# futures = { version = "0.3.17", default-features = false, features = ["async-await", "cfg-target-has-atomic", "unstable"] }
+display-interface-spi = "0.4.1"
+# embedded-graphics = "0.7.1"
+embedded-graphics = "0.8.1"
+# st7789 = "0.6.1"
+sh1106 = "0.5.0"
+display-interface = "0.4.1"
+# byte-slice-cast = { version = "1.2.0", default-features = false }
+# smart-leds = "0.3.0"
+heapless = "0.8"
+# TODO(elsuizo:2024-07-24): no satisface las ultimas versiones de embassy
+# mpu6050-async={ git = "https://github.com/kalkyl/mpu6050-async.git" }
+# usbd-hid = "0.7.0"
+# NOTE(elsuizo:2024-07-11): esto no anda porque depende de una version de
+# embedded-hal vieja
+# mpu6050-async={ git = "https://github.com/kalkyl/mpu6050-async.git" }
+
+# embedded-hal-1 = { package = "embedded-hal", version = "1.0" }
+# embedded-hal-async = "1.0"
+# embedded-hal-bus = { version = "0.1", features = ["async"] }
+# embedded-io-async = { version = "0.6.1", features = ["defmt-03"] }
+# embedded-storage = { version = "0.3" }
+# static_cell = "2"
+# portable-atomic = { version = "1.5", features = ["critical-section"] }
+log = "0.4.27"
+pio-proc = "0.3.0"
+pio = "0.3.0"
+# rand = { version = "0.8.5", default-features = false }
+
+[profile.dev]
+codegen-units = 1
+debug = 2
+debug-assertions = true
+incremental = false
+opt-level = 3
+overflow-checks = true
+
+# cargo build/run --release
+[profile.release]
+codegen-units = 1
+debug = 2
+debug-assertions = false
+incremental = false
+lto = 'fat'
+opt-level = 3
+overflow-checks = false
+
+# do not optimize proc-macro crates = faster builds from scratch
+[profile.dev.build-override]
+codegen-units = 8
+debug = false
+debug-assertions = false
+opt-level = 0
+overflow-checks = false
+
+[profile.release.build-override]
+codegen-units = 8
+debug = false
+debug-assertions = false
+opt-level = 0
+overflow-checks = false
+
+# cargo test
+[profile.test]
+codegen-units = 1
+debug = 2
+debug-assertions = true
+incremental = false
+opt-level = 3
+overflow-checks = true
+
+# cargo test --release
+[profile.bench]
+codegen-units = 1
+debug = 2
+debug-assertions = false
+incremental = false
+lto = 'fat'
+opt-level = 3
